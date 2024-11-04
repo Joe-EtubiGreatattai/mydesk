@@ -1,0 +1,7 @@
+{
+  "name": "mydesk",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
