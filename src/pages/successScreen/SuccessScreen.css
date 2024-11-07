@@ -1,0 +1,81 @@
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full viewport height */
+    padding: 0 20px;
+    text-align: center;
+    background-color: #fff;
+    position: relative; /* To position the button inside this container */
+}
+
+.icon-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.checkmark-icon {
+    width: 60px;
+    height: 60px;
+}
+
+.success-container h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    color: #333;
+}
+
+.success-container p {
+    font-size: 16px;
+    color: #666;
+    margin: 0 0 32px 0;
+    width: 80%;
+}
+
+.profile-button {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    max-width: 300px;
+    padding: 0;
+    margin: 0 auto;
+    cursor: pointer;
+    position: absolute; /* Positioning at the bottom of the screen */
+    bottom: 100px; /* Space from the bottom */
+}
+
+.button-icon {
+    width: 100%;
+    max-width: 300px;
+}
+
+/* For smaller screens */
+@media (max-height: 500px) {
+    .icon-container {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 16px;
+    }
+
+    .checkmark-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .success-container h1 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .success-container p {
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+}
