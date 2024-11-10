@@ -1,119 +1,190 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons } from '@ionic/react';
 import { ArrowLeft, Plus, Instagram } from 'lucide-react';
-import CheckmarkIcon from './../../assets/Subtract.svg';
+import Hero from './../../assets/hero-image.png';
+
+import ProfileButtonIcon from './../../assets/button-blue.svg';
 import './BusinessCardDetails.css';
 
-const BusinessCardDetails: React.FC = () => (
-  <IonPage className="business-card-page">
-    <IonHeader className="ion-no-border">
-      <div className="toolbar">
-        <IonButtons slot="start">
-          <div className="header-buttons">
-            <ArrowLeft className="icon" />
-            <span className="header-title">Business card details</span>
-          </div>
-        </IonButtons>
-      </div>
-    </IonHeader>
+interface FormField {
+  label: string;
+  icon: string;
+  description: string;
+}
 
-    <IonContent>
-      <div className="content">
-        <ProgressIndicators />
-        <ProfileSection />
-        <FormSection />
-        <PreviewButton />
-      </div>
-    </IonContent>
-  </IonPage>
-);
+const BusinessCardDetails: React.FC = () => {
+  const [bio, setBio] = useState('');
+  const [formVisibility, setFormVisibility] = useState<Record<string, boolean>>({});
 
-const ProgressIndicators = () => (
+  return (
+    <IonPage className="business-card-page">
+      <IonHeader className="ion-no-border">
+        <div className="toolbar">
+          <IonButtons slot="start">
+            <div className="header-buttons">
+              <ArrowLeft className="icon" />
+              <span className="header-title">Business card details</span>
+            </div>
+          </IonButtons>
+        </div>
+      </IonHeader>
+
+      <IonContent>
+        <div className="content">
+          <ProgressIndicators />
+          <ProfileSection />
+          <FormSection 
+            bio={bio} 
+            setBio={setBio}
+            formVisibility={formVisibility}
+            setFormVisibility={setFormVisibility}
+          />
+          <PreviewButton />
+        </div>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+const ProgressIndicators: React.FC = () => (
   <div className="progress-indicators">
-    {Array(4).fill(null).map((_, index) => (
-      <div key={index} className={`progress-bar ${index === 0 ? 'active' : ''}`}></div>
+    {['Connect socials', 'Add video or photo', 'Business card details', 'Preview business card'].map((text, index) => (
+      <div key={index} className={`indicator ${index === 3 ? 'active' : ''}`}>
+        {text}
+        <div className="border-line" />
+      </div>
     ))}
   </div>
 );
 
-const ProfileSection = () => (
+const ProfileSection: React.FC = () => (
   <div className="profile-section">
     <div className="profile-image-box">
-    <img src={CheckmarkIcon} alt="Profile" className="hero-image-box" />
+      <img src={Hero} alt="Profile" className="hero-image-box" />
     </div>
   </div>
 );
 
-const FormSection = () => (
+interface FormSectionProps {
+  bio: string;
+  setBio: (value: string) => void;
+  formVisibility: Record<string, boolean>;
+  setFormVisibility: (value: Record<string, boolean>) => void;
+}
+
+const FormSection: React.FC<FormSectionProps> = ({ 
+  bio, 
+  setBio, 
+  formVisibility, 
+  setFormVisibility 
+}) => (
   <div className="form-section">
+    <textarea 
+      placeholder="Write your bio here"
+      value={bio}
+      onChange={(e) => setBio(e.target.value)}
+    />
     {formFields.map((field, index) => (
-      <FormField key={index} label={field.label} icon={field.icon}>
-        {field.description}
-      </FormField>
+      <FormField 
+        key={index} 
+        field={field}
+        isVisible={formVisibility[field.label] || false}
+        onToggle={() => {
+          setFormVisibility({
+            ...formVisibility,
+            [field.label]: !formVisibility[field.label]
+          });
+        }}
+      />
     ))}
     <KeywordsSection />
     <SocialMediaSection />
   </div>
 );
 
-const FormField: React.FC<{ label: string; icon: string; children: string }> = ({ label, icon, children }) => (
+interface FormFieldProps {
+  field: FormField;
+  isVisible: boolean;
+  onToggle: () => void;
+}
+
+const FormField: React.FC<FormFieldProps> = ({ field, isVisible, onToggle }) => (
   <div className="form-field">
     <div className="form-header">
       <div className="form-label">
-        <div className="icon">{icon}</div>
-        <span>{label}</span>
+        <span className="icon">{field.icon}</span>
+        <span>{field.label}</span>
       </div>
+    </div>
+    <div className="input-container">
+      <input 
+        placeholder={field.description}
+        className="form-input"
+      />
       <label className="toggle-switch">
-        <input type="checkbox" className="sr-only" />
-        <div className="switch"></div>
+        <input 
+          type="checkbox" 
+          className="sr-only" 
+          checked={isVisible}
+          onChange={onToggle}
+        />
+        <div className="switch" />
       </label>
     </div>
-    <p className="form-description">{children}</p>
   </div>
 );
 
-const KeywordsSection = () => (
+const KeywordsSection: React.FC = () => (
   <div className="keywords-section">
     <span className="section-title">Add keywords (optional)</span>
-    <p className="description">Keep improving your profile visibility</p>
+    <input 
+      placeholder='Keep improving your profile visibility'
+      className="form-input"
+    />
   </div>
 );
 
-const SocialMediaSection = () => (
+const SocialMediaSection: React.FC = () => (
   <div className="social-media-section">
     <span className="section-title">Add your social media accounts</span>
-    <p className="description">You can add as many as you want</p>
+    <input 
+      placeholder='You can add as many as you want'
+      className="form-input"
+    />
+    
     <div className="social-buttons">
-      {socialButtons.map((ButtonComponent, index) => (
-        <ButtonComponent key={index} />
-      ))}
+      <button className="social-button">
+        <Plus className="icon" />
+      </button>
+      <button className="social-button">
+        <Instagram className="icon" />
+      </button>
     </div>
   </div>
 );
 
-const PreviewButton = () => (
+const PreviewButton: React.FC = () => (
   <div className="preview-button-container">
-    <button className="preview-button">Preview business card</button>
+    <img src={ProfileButtonIcon} alt="profile button" className="create-button" />
   </div>
 );
 
-const formFields = [
-  { label: 'Phone number (optional)', icon: '📱', description: 'Make phone number visible to others' },
-  { label: 'Business address (optional)', icon: '🏢', description: 'Make business address visible to others' },
-  { label: 'Website link (optional)', icon: '🌐', description: 'Make website link visible to others' },
-];
-
-const socialButtons = [
-  () => <button className="social-button"><Plus className="icon" /></button>,
-  () => <button className="social-button"><Instagram className="icon" /></button>,
-  () => (
-    <button className="social-button">
-      <svg className="icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 015.9 5.82s-.51.5 0 0A4.278 4.278 0 0116.6 5.82z" />
-        <path d="M8.9 2.8L5.8 6.6 4.2 5c-.5-.5-1.3-.5-1.8 0-.5.5-.5 1.2 0 1.7l2.9 2.9c.2.2.5.3.7.3.2 0 .5-.1.7-.3l4.3-4.3c.4-.5.4-1.2 0-1.7-.5-.5-1.3-.5-1.8 0z" />
-      </svg>
-    </button>
-  ),
+const formFields: FormField[] = [
+  { 
+    label: 'Phone number (optional)', 
+    icon: '📱', 
+    description: 'Enter your phone number' 
+  },
+  { 
+    label: 'Business address (optional)', 
+    icon: '🏢', 
+    description: 'Enter your business address' 
+  },
+  { 
+    label: 'Website link (optional)', 
+    icon: '🌐', 
+    description: 'Enter your website URL' 
+  },
 ];
 
 export default BusinessCardDetails;

@@ -1,66 +1,70 @@
 import React from 'react';
-import { 
-  IonPage, 
-  IonContent, 
-  IonHeader, 
-  IonToolbar, 
-  IonButtons, 
-  IonBackButton, 
-  IonSegment, 
-  IonSegmentButton, 
-  IonLabel, 
-  IonText, 
-  IonIcon 
+import {
+  IonPage,
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonText,
+  IonIcon
 } from '@ionic/react';
-import { 
-  callOutline, 
-  mailOutline, 
-  locationOutline, 
+import {
+  callOutline,
+  mailOutline,
+  locationOutline,
   globeOutline,
   logoInstagram,
   logoTiktok,
   logoFacebook,
   logoLinkedin,
-  logoTwitter 
+  logoTwitter
 } from 'ionicons/icons';
 import './BusinessCardProfile.css';
 import ProfileButtonIcon from './../../assets/button-blue.svg';
+import Hero from './../../assets/hero-image.png';
+import BackIcon from './../../assets/back.svg';
+import EditIcon from './../../assets/edit icon.svg';
+
 
 const BusinessCardProfile: React.FC = () => {
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/" />
-          </IonButtons>
-          <h2 className='headerText'>Preview Business Card</h2>
-        </IonToolbar>
-      </IonHeader>
+    <IonPage color='white'>
+      <div className="top-navigation">
+        <div className="back-icon-container">
+          <img src={BackIcon} alt="profile button" className="back-icon" />
+        </div>
+        <div className="page-title">Preview Business Card</div>
+      </div>
 
-      <div className="segment-container">
-        <IonSegment value="connect">
-          <IonSegmentButton value="connect">
-            <IonLabel>Connect details</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="add">
-            <IonLabel>Add video or image</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="business">
-            <IonLabel>Business details</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="preview">
-            <IonLabel>Preview business card</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
+      <div className="progress-indicators">
+        <div className="indicator">
+          Connect socials
+          <div className="border-line"></div>
+        </div>
+        <div className="indicator">
+          Add video or photo
+          <div className="border-line"></div>
+        </div>
+        <div className="indicator">
+          Business card details
+          <div className="border-line"></div>
+        </div>
+        <div className="indicator active">
+          Preview business card
+          <div className="border-line"></div>
+        </div>
       </div>
 
       <IonContent>
         {/* Hero Image Section */}
         <div className="hero-section">
-          <img 
-            src="/path/to/hero-image.jpg" 
-            alt="Profile" 
+          <img
+            src={Hero}
+            alt="Profile"
             className="hero-image"
           />
           <div className="logo-container">
@@ -144,14 +148,18 @@ const BusinessCardProfile: React.FC = () => {
                 'Edit business details'
               ].map((action, index) => (
                 <div key={index} className="action-item">
-                  <span>{action}</span>
+                  <div>
+                    <img src={EditIcon} alt="profile button" className="edit-icon" />
+                    <span>{action}</span>
+                  </div>
                   <span>›</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <button className="create-button">Create business card</button>
+          <img src={ProfileButtonIcon} alt="profile button" className="create-button" />
+
         </div>
       </IonContent>
     </IonPage>
